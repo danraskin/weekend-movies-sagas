@@ -17,3 +17,4 @@ app.use('/api/genre', genreRouter)
 app.listen(port, function () {
     console.log('Listening on port: ', port);
 });
+

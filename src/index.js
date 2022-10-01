@@ -84,7 +84,7 @@ const genres = (state = [], action) => {
 const movieDetails = (state = {}, action) => {
     switch (action.type) {
         case 'SET_MOVIE_DETAILS':
-            return action.payload; //what will payloard be? come from saga...
+            return {...action.payload}; //what will payloard be? come from saga...
         case 'CLEAR_MOVIE_DETAILS':
             return {};
         default:

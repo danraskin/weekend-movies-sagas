@@ -21,14 +21,16 @@ router.get('/:id', (req, res) => {
   const movieId = req.params.id;
 
   const query = `
-    SELECT title, description, poster, JSON_AGG(mg.genre_id) genres
-      FROM movies m JOIN movies_genres mg ON m.id = mg.movie_id
+    SELECT title, description, poster, JSON_AGG(g.name) genres
+      FROM movies m
+        JOIN movies_genres mg ON m.id = mg.movie_id
+        JOIN genres g ON g.id = mg.genre_id
       WHERE m.id = ${movieId}
       GROUP BY m.id;
   `
   pool.query(query)
     .then( result => {
-      res.send(result.rows);
+      res.send(result.rows[0]);
     })
     .catch(err => {
       console.log('ERROR: Get movies details', err);
