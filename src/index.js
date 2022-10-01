@@ -16,7 +16,7 @@ function* rootSaga() {
     yield takeEvery('FETCH_MOVIES', fetchAllMovies);
     yield takeEvery('FETCH_GENRES', fetchAllGenres);
     yield takeEvery('FETCH_MOVIE_DETAILS', fetchMovieDetails)
-    // SAGA to clear movie detail object.
+    yield takeEvery('CREATE_MOVIE', createNewMovie);
 }
 
 // SAGA FUNCTIONS
@@ -48,12 +48,26 @@ function* fetchAllGenres() {
 function* fetchMovieDetails(action) {
     // GET movie details from DB. use this in MovideDetails page.
     try {
-        const movieId = action.payload
+        const movieId = action.payload;
         const detailsRes = yield axios.get(`/api/movie/${movieId}`);
         yield put({ type: 'SET_MOVIE_DETAILS', payload: detailsRes.data });
     } catch {
         console.log('GET movie details error');
     }
+}
+
+function* createNewMovie(action) {
+    console.log('in createNewMovie ',action.payload);
+    // try {
+    //     const newMovie = action.payload;
+    //     yield axios({
+    //         method: 'POST',
+    //         url: '/api/movie',
+    //         data: newMovie
+    //     });
+    // } catch {
+    //     console.log('POST new movie error')
+    // }
 }
 
 // Create sagaMiddleware
