@@ -16,6 +16,28 @@ router.get('/', (req, res) => {
 
 });
 
+router.get('/:id', (req, res) => {
+  //gets movie details by ID. should return info from movies DB + all genres.
+  const movieId = req.params.id;
+
+  const query = `
+    SELECT title, description, poster, JSON_AGG(g.name) genres
+      FROM movies m
+        JOIN movies_genres mg ON m.id = mg.movie_id
+        JOIN genres g ON g.id = mg.genre_id
+      WHERE m.id = ${movieId}
+      GROUP BY m.id;
+  `
+  pool.query(query)
+    .then( result => {
+      res.send(result.rows[0]);
+    })
+    .catch(err => {
+      console.log('ERROR: Get movies details', err);
+      res.sendStatus(500);
+    })
+})
+
 router.post('/', (req, res) => {
   console.log(req.body);
   // RETURNING "id" will give us back the id of the created movie
