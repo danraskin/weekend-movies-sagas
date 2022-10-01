@@ -14,6 +14,7 @@ import axios from 'axios';
 // Create the rootSaga generator function
 function* rootSaga() {
     yield takeEvery('FETCH_MOVIES', fetchAllMovies);
+    yield takeEvery('FETCH_GENRES', fetchAllGenres);
 }
 
 function* fetchAllMovies() {
@@ -24,9 +25,20 @@ function* fetchAllMovies() {
         yield put({ type: 'SET_MOVIES', payload: movies.data });
 
     } catch {
-        console.log('get all error');
+        console.log('GET all movies error');
+    }   
+}
+
+function* fetchAllGenres() {
+    // GET all genres from DB. will use this in ADD MOVIE page.
+    try {
+        const genres = yield axios.get('api/genre');
+        console.log('get all genres: ', genres.data);
+        yield put({ type: 'SET_GENRES', payload: genres.data });
+
+    } catch {
+        console.log('GET all genres error');
     }
-        
 }
 
 // Create sagaMiddleware
