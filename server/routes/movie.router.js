@@ -16,6 +16,22 @@ router.get('/', (req, res) => {
 
 });
 
+router.get('/:id', (req, res) => {
+  //gets movie details by ID. should return info from movies DB + all genres.
+  console.log('GET /api/movie/:id', req.params.id);
+  const movieId = req.params.id;
+
+  const query = `SELECT * FROM movies WHERE id = ${movieId}`
+  pool.query(query)
+    .then( result => {
+      res.send(result.rows);
+    })
+    .catch(err => {
+      console.log('ERROR: Get movies details', err);
+      res.sendStatus(500);
+    })
+})
+
 router.post('/', (req, res) => {
   console.log(req.body);
   // RETURNING "id" will give us back the id of the created movie

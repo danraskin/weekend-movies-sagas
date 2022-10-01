@@ -8,9 +8,11 @@ function MovieList() {
     const history = useHistory();
     const dispatch = useDispatch();
     const movies = useSelector(store => store.movies);
+    //const genres = useSelector(store => store.genres); //use this if i am to arrange movies based on genre. will need a separate route to access movies_genres table.
 
     useEffect(() => {
         dispatch({ type: 'FETCH_MOVIES' });
+        dispatch({ type: 'FETCH_GENRES' });
     }, []);
 
 
