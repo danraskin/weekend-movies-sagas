@@ -18,10 +18,14 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   //gets movie details by ID. should return info from movies DB + all genres.
-  console.log('GET /api/movie/:id', req.params.id);
   const movieId = req.params.id;
 
-  const query = `SELECT * FROM movies WHERE id = ${movieId}`
+  const query = `
+    SELECT title, description, poster, JSON_AGG(mg.genre_id) genres
+      FROM movies m JOIN movies_genres mg ON m.id = mg.movie_id
+      WHERE m.id = ${movieId}
+      GROUP BY m.id;
+  `
   pool.query(query)
     .then( result => {
       res.send(result.rows);
