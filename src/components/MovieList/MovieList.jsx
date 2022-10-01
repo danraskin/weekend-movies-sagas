@@ -15,8 +15,8 @@ function MovieList() {
 
 
     const handleDetailsClick = (event) => {
-        console.log(event.target.id);
-        // history.push(`/details/${movieId}`)
+        const movieId = event.target.id;
+        history.push(`/details/${movieId}`)
     }
 
     return (
