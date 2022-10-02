@@ -78,7 +78,7 @@ function EditMovie() {
         switch (e.target.value) {
             case 'Save':
                 dispatch({
-                    type: 'EDIT_MOVIE', //need to create SAGA
+                    type: 'EDIT_MOVIE',
                     payload: {
                         title: title,
                         description: description,
@@ -86,14 +86,19 @@ function EditMovie() {
                         movieId: movieId
                     }    
                 })
-                history.push('/movies');
+            history.push('/movies');
                 
             case 'Cancel':
-                history.push('/movies')
+                history.push('/movies');
+            case 'Delete':
+                dispatch({type: 'DELETE_MOVIE', payload: movieId});
+                history.push('/movies');
             default:
                 return null;
         }
     }
+
+    //need new logic for all input fields.
 
     // THIS was an old setter for a different dropdown menu. keeping for reference.
 
@@ -114,6 +119,7 @@ function EditMovie() {
             />
             <button value="Save" onClick={handleClick}>Save</button>
             <button value="Cancel" onClick={handleClick}>Cancel</button>
+            <button value="Delete" onClick={handleClick}>Delete</button>
         </div>
     );
 }

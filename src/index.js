@@ -17,6 +17,8 @@ function* rootSaga() {
     yield takeEvery('FETCH_GENRES', fetchAllGenres);
     yield takeEvery('FETCH_MOVIE_DETAILS', fetchMovieDetails)
     yield takeEvery('CREATE_MOVIE', createNewMovie);
+    yield takeEvery('EDIT_MOVIE', editMovie);
+    yield takeEvery('DELETE_MOVIE', deleteMovie);
 }
 
 // SAGA FUNCTIONS
@@ -65,8 +67,37 @@ function* createNewMovie(action) {
             url: '/api/movie',
             data: newMovie
         });
+        yield put({type: 'FETCH_MOVIES' });
     } catch {
-        console.log('POST new movie error')
+        console.log('POST new movie error');
+    }
+}
+
+function* editMovie(action) {
+    try {
+        const movieId = action.payload.movieId;
+        const { title, description, genres } = action.payload;
+        const movieDetails = {title, description, genres}; //these two lines removie movieID from payload
+        console.log('in edit movie', movieDetails);
+        yield axios({
+            method: 'PUT',
+            url: `/api/movie/${movieId}`,
+            data: movieDetails
+        })
+        yield put({type: 'FETCH_MOVIES' });
+
+    } catch {
+        console.log('PUT /api/movie/id error');
+    }
+}
+
+function* deleteMovie(action) {
+    try {
+        const movieId = action.payload;
+        yield axios.delete(`api/movie/${movieId}`);
+        yield put({type: 'FETCH_MOVIES' });
+    } catch {
+        console.log('DELETE /api/movie/id error');
     }
 }
 
