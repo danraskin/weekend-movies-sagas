@@ -31,10 +31,12 @@ function MovieList() {
             <button onClick={handleNavClick}>Add Movie</button>
             <Grid container spacing={2} className="movies">
                 {movies.map(movie => (
-                        <Grid key={movie.id}>
-                            <Card sx={{ Width: 100, Hieght: 100}}>
-                                <MovieCard key={movie.id} movie={movie} handleDetailsClick={handleDetailsClick}/>
-                            </Card>
+                        <Grid item key={movie.id} xs={8} sm={4} md={3}>
+                            <MovieCard 
+                                key={movie.id} 
+                                movie={movie} 
+                                handleDetailsClick={handleDetailsClick}
+                            />
                         </Grid>
                     )
                 )}

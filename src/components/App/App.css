@@ -1,7 +1,8 @@
 .App {
   text-align: center;
   margin: 0;
-  background-image: url("../../../public/images/Eadweard-Muybridge-method-cameras-battery-shutter-controls-1877.webp")
+  background-image: url("../../../public/images/Eadweard-Muybridge-method-cameras-battery-shutter-controls-1877.webp");
+  background-size: cover;
 }
 
 
