@@ -58,16 +58,16 @@ function* fetchMovieDetails(action) {
 
 function* createNewMovie(action) {
     console.log('in createNewMovie ',action.payload);
-    // try {
-    //     const newMovie = action.payload;
-    //     yield axios({
-    //         method: 'POST',
-    //         url: '/api/movie',
-    //         data: newMovie
-    //     });
-    // } catch {
-    //     console.log('POST new movie error')
-    // }
+    try {
+        const newMovie = action.payload;
+        yield axios({
+            method: 'POST',
+            url: '/api/movie',
+            data: newMovie
+        });
+    } catch {
+        console.log('POST new movie error')
+    }
 }
 
 // Create sagaMiddleware
@@ -98,7 +98,7 @@ const genres = (state = [], action) => {
 const movieDetails = (state = {}, action) => {
     switch (action.type) {
         case 'SET_MOVIE_DETAILS':
-            return {...action.payload}; //what will payloard be? come from saga...
+            return {...action.payload};
         case 'CLEAR_MOVIE_DETAILS':
             return {};
         default:

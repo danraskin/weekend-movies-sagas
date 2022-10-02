@@ -28,7 +28,7 @@ function NewMovie() {
                         title: title,
                         description: description,
                         poster: posterUrl,
-                        genre_id: newGenres
+                        genres: newGenres
                     }    
                 })
                 history.push('/movies');

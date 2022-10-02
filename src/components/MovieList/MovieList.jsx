@@ -20,10 +20,13 @@ function MovieList() {
         const movieId = event.target.id;
         history.push(`/details/${movieId}`)
     }
-
+    const handleNavClick = () => {
+        history.push('/newmovie')
+    }
     return (
         <main>
             <h1>MovieList</h1>
+            <button onClick={handleNavClick}>Add Movie</button>
             <section className="movies">
                 {movies.map(movie => {
                     return (

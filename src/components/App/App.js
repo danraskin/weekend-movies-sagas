@@ -3,13 +3,14 @@ import './App.css';
 import MovieList from '../MovieList/MovieList';
 import MovieDetails from '../MovieDetails/MovieDetails';
 import NewMovie from '../NewMovie/NewMovie';
+import EditMovie from '../EditMovie/EditMovie';
 
 function App() {
   return (
     <div className="App">
       <h1>The Movies Saga!</h1>
       <Router>        
-        <Redirect from="/" to="/movies" />
+        {/* <Redirect from="/" to="/movies" /> */}
         <Route exact path="/movies">
           <MovieList />
         </Route>
@@ -20,6 +21,9 @@ function App() {
         
         <Route exact path="/details/:id">
           <MovieDetails />
+        </Route>
+        <Route exact path ="/edit/:id">
+          <EditMovie />
         </Route>
 
       </Router>

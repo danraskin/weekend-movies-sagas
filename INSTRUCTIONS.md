@@ -124,12 +124,12 @@ The edit page should have the buttons:
 ### TO DO
 
 - [x] DETAILS page routes and rendering
-- [] ADD MOVIES page route and rendering
+- [x] ADD MOVIES page route and rendering
     - [x] make and route component
-    - [] build form
-        - [] genre dropdown menu (pull from group assignment)
+    - [x] build form
+        - [x] genre dropdown menu (pull from group assignment)
         - [] input validation
-    - [] POST route to api/movie
+    - [x] POST route to api/movie
 - [] NAVBARS
 - [] EDIT page
     - [] make and route component
