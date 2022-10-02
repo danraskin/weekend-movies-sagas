@@ -42,12 +42,11 @@ function NewMovie() {
                         genres: newGenres
                     }    
                 })
-                history.push('/movies');
-                
+                return history.push('/');
             case 'Cancel':
-                history.push('/movies')
+                return history.push('/')
             default:
-                return null;
+                return history.push('/');
         }
     }
 

@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom'
 
 import './MovieList.css'
+import MovieCard from '../MovieList/MovieCard';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
 
 function MovieList() {
     const history = useHistory();
@@ -25,19 +28,22 @@ function MovieList() {
     }
     return (
         <main>
-            <h1>MovieList</h1>
             <button onClick={handleNavClick}>Add Movie</button>
-            <section className="movies">
-                {movies.map(movie => {
-                    return (
-                        <div key={movie.id} >
-                            <h3>{movie.title}</h3>
-                                <img src={movie.poster}  alt={movie.title} id={movie.id} onClick={handleDetailsClick} />
-                        </div>
-                    );
-                })}
-            </section>
+            <Grid container spacing={2} className="movies">
+                {movies.map(movie => (
+                        <Grid key={movie.id}>
+                            <Card sx={{ Width: 100, Hieght: 100}}>
+                                <MovieCard key={movie.id} movie={movie} handleDetailsClick={handleDetailsClick}/>
+                            </Card>
+                        </Grid>
+                    )
+                )}
+            </Grid>
         </main>
+
+
+
+
 
     );
 }

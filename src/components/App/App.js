@@ -4,14 +4,15 @@ import MovieList from '../MovieList/MovieList';
 import MovieDetails from '../MovieDetails/MovieDetails';
 import NewMovie from '../NewMovie/NewMovie';
 import EditMovie from '../EditMovie/EditMovie';
+import Header from '../App/Header';
 
 function App() {
   return (
     <div className="App">
-      <h1>The Movies Saga!</h1>
+      <Header />
       <Router>        
-        {/* <Redirect from="/" to="/movies" /> */}
-        <Route exact path="/movies">
+          {/* <Redirect from="/e" to="/movies" />  */}
+        <Route exact path="/">
           <MovieList />
         </Route>
 

@@ -85,8 +85,7 @@ router.put('/:id', (req, res) => {
     SET
       title = $1,
       description = $2
-    WHERE id=$3
-    RETURNING "id";
+    WHERE id=$3;
   `
 
   // FIRST QUERY MAKES MOVIE
@@ -139,6 +138,4 @@ router.delete('/:id', (req, res) => {
     })
 })
 
-
-bra
 module.exports = router;

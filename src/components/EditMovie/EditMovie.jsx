@@ -85,16 +85,15 @@ function EditMovie() {
                         genres: newGenres,
                         movieId: movieId
                     }    
-                })
-            history.push('/movies');
-                
+                });
+                return history.push('/');
             case 'Cancel':
-                history.push('/movies');
+                return history.push('/');
             case 'Delete':
                 dispatch({type: 'DELETE_MOVIE', payload: movieId});
-                history.push('/movies');
+                return history.push('/');
             default:
-                return null;
+               return history.push('/');
         }
     }
 
