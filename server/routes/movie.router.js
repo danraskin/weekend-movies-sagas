@@ -126,7 +126,7 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   const movieId = req.params.id;
   const deleteMovieQuery = `
-    DELETE FROM movies CASCADE
+    DELETE FROM movies
       WHERE id = $1;
   `
   pool.query(deleteMovieQuery, [movieId])
@@ -140,5 +140,5 @@ router.delete('/:id', (req, res) => {
 })
 
 
-
+bra
 module.exports = router;
