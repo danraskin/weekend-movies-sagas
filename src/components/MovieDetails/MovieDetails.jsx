@@ -1,15 +1,14 @@
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import React, { useEffect } from 'react'
 
 function MovieDetails() {
-
+    const history = useHistory();
     const params = useParams();
     const dispatch = useDispatch();
-    const genres = useSelector(store => store.genres); //retrieves genres from store. genres will be set bye useEffect in HOME (MovieList)
+    const movieId = params.id;
 
     useEffect(() => {
-        const movieId = params.id;
         
         //retrieves movie details by ID once page loads
         dispatch({
@@ -24,7 +23,7 @@ function MovieDetails() {
             })
         };
         //calls useEffect *if* params.id changes
-    },[params.id]);
+    },[movieId]);
 
     const movieDetails = useSelector(store => store.movieDetails); //movieDetails set to store on DOM load
 
@@ -32,13 +31,16 @@ function MovieDetails() {
     const handleClick = () => {
         console.log(movieDetails.genres);
     }
+    const handleNavClick = () => {
+        history.push(`/edit/${movieId}`);
+    }
 
-//must be a NAVBAR/route button.
 
 //movie details displays using conditional rendering. kind of ugly.
   return (
     <>
       <h2>Movie Details</h2>
+      <button onClick={handleNavClick}>EDIT</button>
       <ul>
         <li>{movieDetails.title}</li>
             { movieDetails.genres ?

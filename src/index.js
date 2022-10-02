@@ -16,7 +16,9 @@ function* rootSaga() {
     yield takeEvery('FETCH_MOVIES', fetchAllMovies);
     yield takeEvery('FETCH_GENRES', fetchAllGenres);
     yield takeEvery('FETCH_MOVIE_DETAILS', fetchMovieDetails)
-    // SAGA to clear movie detail object.
+    yield takeEvery('CREATE_MOVIE', createNewMovie);
+    yield takeEvery('EDIT_MOVIE', editMovie);
+    yield takeEvery('DELETE_MOVIE', deleteMovie);
 }
 
 // SAGA FUNCTIONS
@@ -48,11 +50,54 @@ function* fetchAllGenres() {
 function* fetchMovieDetails(action) {
     // GET movie details from DB. use this in MovideDetails page.
     try {
-        const movieId = action.payload
+        const movieId = action.payload;
         const detailsRes = yield axios.get(`/api/movie/${movieId}`);
         yield put({ type: 'SET_MOVIE_DETAILS', payload: detailsRes.data });
     } catch {
         console.log('GET movie details error');
+    }
+}
+
+function* createNewMovie(action) {
+    console.log('in createNewMovie ',action.payload);
+    try {
+        const newMovie = action.payload;
+        yield axios({
+            method: 'POST',
+            url: '/api/movie',
+            data: newMovie
+        });
+        yield put({type: 'FETCH_MOVIES' });
+    } catch {
+        console.log('POST new movie error');
+    }
+}
+
+function* editMovie(action) {
+    try {
+        const movieId = action.payload.movieId;
+        const { title, description, genres } = action.payload;
+        const movieDetails = {title, description, genres}; //these two lines removie movieID from payload
+        console.log('in edit movie', movieDetails);
+        yield axios({
+            method: 'PUT',
+            url: `/api/movie/${movieId}`,
+            data: movieDetails
+        })
+        yield put({type: 'FETCH_MOVIES' });
+
+    } catch {
+        console.log('PUT /api/movie/id error');
+    }
+}
+
+function* deleteMovie(action) {
+    try {
+        const movieId = action.payload;
+        yield axios.delete(`api/movie/${movieId}`);
+        yield put({type: 'FETCH_MOVIES' });
+    } catch {
+        console.log('DELETE /api/movie/id error');
     }
 }
 
@@ -84,7 +129,7 @@ const genres = (state = [], action) => {
 const movieDetails = (state = {}, action) => {
     switch (action.type) {
         case 'SET_MOVIE_DETAILS':
-            return {...action.payload}; //what will payloard be? come from saga...
+            return {...action.payload};
         case 'CLEAR_MOVIE_DETAILS':
             return {};
         default:
