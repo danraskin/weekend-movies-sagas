@@ -17,14 +17,17 @@ function EditMovie() {
     const history = useHistory();
     const dispatch = useDispatch();
     const params = useParams();
-    const genres = useSelector(store => store.genres);
+
     const movieId = params.id;
 
-   // local state for inputs
-   const movieDetails = useSelector(store => store.movieDetails); //movieDetails set to store on DOM load
-   const [title, setTitle] = useState ('');
-   const [description, setDescription] = useState ('');
-   const [newGenres, setNewGenres] = useState([]); //local state for genres?
+    // REDUX state
+    const genres = useSelector(store => store.genres);
+    const movieDetails = useSelector(store => store.movieDetails); //movieDetails set to store on DOM load
+
+    // local state for inputs
+    const [title, setTitle] = useState ('');
+    const [description, setDescription] = useState ('');
+    const [newGenres, setNewGenres] = useState([]); //Ideally, initial state would be useState(oldGenres). unfortunately there are lag issues.
 
 
     useEffect(() => {
@@ -34,6 +37,7 @@ function EditMovie() {
             type: 'FETCH_MOVIE_DETAILS',
             payload: movieId
         });
+
         //clears database details on page close
         return () => {
             dispatch({
@@ -42,6 +46,9 @@ function EditMovie() {
         };
         //calls useEffect *if* params.id changes
     },[movieId]);
+
+
+    // UNABLE TO SEED NEWGENRES WITH OLD GENRES ON DOM LOAD. 
 
     const oldGenres = () => {
         const oldGenreList = [];
@@ -55,31 +62,44 @@ function EditMovie() {
         return oldGenreList;
     }
 
+    
+    //triggerOldGenres is called onMouseEnter in SelecdtGenreButton. boolean state (seedGenreSelection) and conditional switch ensures seedGen is triggered only once.
+    //triggerOldGenres is housed outside selectGenreButton so that button can be used in NewMovie component.
+
+    const [seedGenreSelection, setSeed] = useState(true);
+    const triggerOldGenres = () => {
+        if (seedGenreSelection) {
+            setNewGenres(oldGenres);
+            setSeed(false);
+        }
+    }
 
     const handleClick = (e) => {
         switch (e.target.value) {
             case 'Save':
-            //     dispatch({
-            //         type: 'CREATE_MOVIE',
-            //         payload: {
-            //             title: title,
-            //             description: description,
-            //             poster: posterUrl,
-            //             genres: newGenres
-            //         }    
-            //     })
-            //     history.push('/movies');
+                dispatch({
+                    type: 'EDIT_MOVIE', //need to create SAGA
+                    payload: {
+                        title: title,
+                        description: description,
+                        genres: newGenres,
+                        movieId: movieId
+                    }    
+                })
+                history.push('/movies');
                 
-            // case 'Cancel':
-            //     history.push('/movies')
+            case 'Cancel':
+                history.push('/movies')
             default:
                 return null;
         }
     }
 
-    const handleSelectGenre = (genreId) => {
-        setNewGenres( arr => [...arr, genreId]);
-    }
+    // THIS was an old setter for a different dropdown menu. keeping for reference.
+
+    // const handleSelectGenre = (genreId) => {
+    //     setNewGenres( arr => [...arr, genreId]);
+    // }
 
 
     return (
@@ -89,7 +109,8 @@ function EditMovie() {
             <SelectGenreButton 
                 genres={genres}
                 newGenres={newGenres}
-                handleSelectedGenre={handleSelectGenre}
+                setNewGenres={setNewGenres}
+                triggerOldGenres={triggerOldGenres}
             />
             <button value="Save" onClick={handleClick}>Save</button>
             <button value="Cancel" onClick={handleClick}>Cancel</button>

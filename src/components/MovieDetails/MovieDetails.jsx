@@ -35,7 +35,6 @@ function MovieDetails() {
         history.push(`/edit/${movieId}`);
     }
 
-//must be a NAVBAR/route button.
 
 //movie details displays using conditional rendering. kind of ugly.
   return (
