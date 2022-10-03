@@ -5,8 +5,10 @@ import SelectGenreButton from '../Form/SelectGenreButton';
 
 //@mui imports
 import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 function NewMovie() {
     const history = useHistory();
@@ -21,6 +23,7 @@ function NewMovie() {
     const [newGenres, setNewGenres] = useState([]);
 
     const triggerOldGenres = () => {
+    //may not be necessary? exist here for SelectGenreButton component.
         return null;
     }
 
@@ -28,7 +31,6 @@ function NewMovie() {
         //retrieves genres. ONLY NECESSARY if user direct-routes to this url.
         dispatch({ type: 'FETCH_GENRES'});
     },[]);
-
 
     const handleClick = (e) => {
         switch (e.target.value) {
@@ -51,19 +53,57 @@ function NewMovie() {
     }
 
     return (
-        <div>
-            <input type="text" placeholder="title" value={title} onChange={e=>setTitle(e.target.value)}></input>
-            <textarea type="text" placeholder="description" value={description} onChange={e=>setDescription(e.target.value)}></textarea>
-            <input type="textbox" placeholder="url" value={posterUrl} onChange={e=>setPosterUrl(e.target.value)}></input>
-            <SelectGenreButton 
-                genres={genres}
-                newGenres={newGenres}
-                setNewGenres={setNewGenres}
-                triggerOldGenres={triggerOldGenres}
-            />
-            <button value="Save" onClick={handleClick}>Save</button>
-            <button value="Cancel" onClick={handleClick}>Cancel</button>
-        </div>
+        <Card
+            className="movieForm"
+            component="form"
+            sx={{
+                height: 500,
+                width: 300,
+            }}
+        >
+            <Stack spacing={1} direction="column" alignItems="center">
+                <Typography>New Movie</Typography>
+                <TextField
+                    sx={{width: "75%"}}
+                    required
+                    id="outlined-required"
+                    label="Title"
+                    value={title}
+                    onChange={e=>setTitle(e.target.value)}
+                    variant="filled"
+                />
+                <TextField
+                    required
+                    sx={{width: "75%"}}
+                    id="outlined-required"
+                    label="description"
+                    value={description}
+                    onChange={e=>setDescription(e.target.value)}
+                    multiline
+                    rows={6}
+                    variant="filled"
+                />
+                <TextField
+                    sx={{width: "75%"}}
+                    required
+                    id="outlined-required"
+                    label="Poster image URL"
+                    value={posterUrl}
+                    onChange={e=>setPosterUrl(e.target.value)}
+                    variant="filled"
+                />
+                <SelectGenreButton 
+                    genres={genres}
+                    newGenres={newGenres}
+                    setNewGenres={setNewGenres}
+                    triggerOldGenres={triggerOldGenres}
+                />
+                <Stack direction="row">
+                    <Button value="Save" onClick={handleClick}>Save</Button>
+                    <Button value="Cancel" onClick={handleClick}>Cancel</Button>
+                </Stack>
+            </Stack>
+        </Card>
     );
 }
 

@@ -6,12 +6,10 @@ import SelectGenreButton from '../Form/SelectGenreButton';
 
 //@mui imports
 import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 function EditMovie() {
     const history = useHistory();
@@ -28,7 +26,7 @@ function EditMovie() {
     const [title, setTitle] = useState ('');
     const [description, setDescription] = useState ('');
     const [newGenres, setNewGenres] = useState([]); //Ideally, initial state would be useState(oldGenres). unfortunately there are lag issues.
-
+    const [seedGenreSelection, setSeed] = useState(true); // this is used to seed genre menu with values from movieDetails.
 
     useEffect(() => {
         dispatch({ type: 'FETCH_GENRES' }); //in case user navigates directly to page.
@@ -37,6 +35,10 @@ function EditMovie() {
             type: 'FETCH_MOVIE_DETAILS',
             payload: movieId
         });
+
+        setTitle(movieDetails.title); //this sets state for EDIT_MOVIE dispatch in case user does not make any edits to form.
+        setDescription(movieDetails.description); //without this, parameters are only set on form 'onChange'.
+        setSeed(true); //this reloads genre menu in case user navigates directly to edit/id from another edit/#. otherwise, movieDetails is updated, but newGenres is not re-seeded with movieDescription array.
 
         //clears database details on page close
         return () => {
@@ -48,7 +50,7 @@ function EditMovie() {
     },[movieId]);
 
 
-    // UNABLE TO SEED NEWGENRES WITH OLD GENRES ON DOM LOAD. 
+    // UNABLE TO SEED NEWGENRES WITH OLD GENRES ON DOM LOAD. oldGenres returns and array of genre IDs. needs to loop through movideDetails.genres AND full genre list b/c movieDetails.genres is array of strings with no ids. 
 
     const oldGenres = () => {
         const oldGenreList = [];
@@ -63,10 +65,9 @@ function EditMovie() {
     }
 
     
-    //triggerOldGenres is called onMouseEnter in SelecdtGenreButton. boolean state (seedGenreSelection) and conditional switch ensures seedGen is triggered only once.
+    //triggerOldGenres is called onMouseEnter in SelecetGenreButton. boolean state (seedGenreSelection) and conditional switch ensures seedGen is triggered only once.
     //triggerOldGenres is housed outside selectGenreButton so that button can be used in NewMovie component.
 
-    const [seedGenreSelection, setSeed] = useState(true);
     const triggerOldGenres = () => {
         if (seedGenreSelection) {
             setNewGenres(oldGenres);
@@ -74,9 +75,17 @@ function EditMovie() {
         }
     }
 
+        // const logValues = ()=> {
+        // testing code for future.
+        //     console.log(title);
+        //     console.log(description);
+        //     console.log(description);
+        //     console.log(newGenres);
+        // }
     const handleClick = (e) => {
         switch (e.target.value) {
             case 'Save':
+            // return logValues(); //this is testing code. retaining for future.
                 dispatch({
                     type: 'EDIT_MOVIE',
                     payload: {
@@ -85,8 +94,8 @@ function EditMovie() {
                         genres: newGenres,
                         movieId: movieId
                     }    
-                });
-                return history.push('/');
+               });
+               return history.push('/');
             case 'Cancel':
                 return history.push('/');
             case 'Delete':
@@ -97,7 +106,6 @@ function EditMovie() {
         }
     }
 
-    //need new logic for all input fields.
 
     // THIS was an old setter for a different dropdown menu. keeping for reference.
 
@@ -105,21 +113,56 @@ function EditMovie() {
     //     setNewGenres( arr => [...arr, genreId]);
     // }
 
-
     return (
-        <div>
-            <input type="text" placeholder={movieDetails.title} value={title} onChange={e=>setTitle(e.target.value)}></input>
-            <textarea type="text" placeholder={movieDetails.description} value={description} onChange={e=>setDescription(e.target.value)}></textarea>            
-            <SelectGenreButton 
-                genres={genres}
-                newGenres={newGenres}
-                setNewGenres={setNewGenres}
-                triggerOldGenres={triggerOldGenres}
-            />
-            <button value="Save" onClick={handleClick}>Save</button>
-            <button value="Cancel" onClick={handleClick}>Cancel</button>
-            <button value="Delete" onClick={handleClick}>Delete</button>
-        </div>
+        <Card
+            className="movieForm"
+            component="form"
+            sx={{
+                height: 500,
+                width: 300,
+            }}
+        >
+            <Stack spacing={1} direction="column" alignItems="center">
+                <Typography>Edit Movie</Typography>
+                <TextField
+                    required
+                    sx={{width: "75%"}}
+                    id="outlined-required"
+                    defaultValue={movieDetails.title}
+                    label="title"
+                    onChange={e=>setTitle(e.target.value)}
+                    variant="filled"
+                />
+                <TextField
+                    required
+                    sx={{width: "75%"}}
+                    id="outlined-required"
+                    defaultValue={movieDetails.description}
+                    label="description"
+                    onChange={e=>setDescription(e.target.value)}
+                    multiline
+                    rows={6}
+                    variant="filled"
+                />
+                <SelectGenreButton 
+                    genres={genres}
+                    newGenres={newGenres}
+                    setNewGenres={setNewGenres}
+                    triggerOldGenres={triggerOldGenres}
+                />
+                <Stack direction="row">
+                    <Button value="Save" onClick={handleClick}>Save</Button>
+                    <Button value="Cancel" onClick={handleClick}>Cancel</Button>
+                    <Button value="Delete" onClick={handleClick}>Delete</Button>
+                </Stack>
+            </Stack>
+        </Card>
+
+
+
+
+
+
     );
 }
 
