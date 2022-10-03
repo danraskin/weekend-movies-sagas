@@ -9,8 +9,6 @@ import Divider from '@mui/material/Divider';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 
-
-
 function MovieDetails() {
     const history = useHistory();
     const params = useParams();
