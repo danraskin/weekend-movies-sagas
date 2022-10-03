@@ -17,7 +17,7 @@ const MenuProps = {
   },
 };
 
-function getStyles(genreId, newGenres, theme) {
+function getStyles(genreId, newGenres, theme) { 
     return {
       fontWeight:
         newGenres.indexOf(genreId) === -1
@@ -35,7 +35,7 @@ function SelectGenreButton({ setNewGenres, newGenres, genres, triggerOldGenres }
 
     return (
         <div onMouseEnter={triggerOldGenres}>
-        <FormControl sx={{ m: 1, width: 300 }}>
+        <FormControl sx={{ m: 1, width: 230}}>
             <InputLabel id="demo-multiple-name-label" >Genres</InputLabel>
                 <Select
                     labelId="demo-multiple-name-label"

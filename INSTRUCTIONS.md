@@ -136,11 +136,11 @@ The edit page should have the buttons:
     - [x] build form
     - [x] PUT route api/movie/:id
     - [x] POST/DELETE routes to api/movie/:id, (adds/deletes from movies_genres)
-    - [] PREVIOUS MOVIE DETAILS stored in local state on load so user can re-submit with   no changes.
+    - [] PREVIOUS MOVIE DETAILS stored in local state on load so user can re-submit with no changes.
 - [] MOVIE LIST page search bar
 
 - [] STYLE
-    - [] Header
-    - [] CARDS (MOVIE LIST)
+    - [x] Header
+    - [x] CARDS (MOVIE LIST)
     - [] new movie/edit form. also CARDS?
-    - []Netflix style bullshit
+    - [] Netflix style bullshit
